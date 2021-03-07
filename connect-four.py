@@ -6,6 +6,13 @@
 # Epic olympic match: https://www.youtube.com/watch?v=d-7eiD2DNGw
 
 ###############
+## LIBRARIES ##
+###############
+
+# Library to colour the game
+from termcolor import cprint
+
+###############
 ## FUNCTIONS ##
 ###############
 
@@ -17,14 +24,33 @@ def initialiseBoard(board):
             board[row-1].append(" ")  # and fill that row with spaces
 
 
-# Function to print the current board to the screen
+# Function to print the current board to the screen with colour
 def printBoard(board):
     print("  1 2 3 4 5 6 7")
     for row in range(1, 7):  # 1 to 6
         print(str(row) + "|", end="")
         for column in range(1, 8):  # 1 to 7
-            print(board[row-1][column-1] + "|", end="")
+            if board[row-1][column-1] == "O":  # RED
+                cprint(u'\u2B24', 'red', end="")
+                print("|", end="")
+            elif board[row-1][column-1] == "X":  # YELLOW
+                cprint(u'\u2B24', 'yellow', end="")
+                print("|", end="")
+            elif board[row-1][column-1] == " ":  # GREY
+                cprint(u'\u2B24', end="")
+                print("|", end="")
         print("\n", end="")
+
+
+# Function to prompt the coloured player for the move location
+def prompt(player):
+    print("Player ", end="")
+    if player == "O":  # RED
+        cprint(u'\u2B24', 'red', end="")
+    elif player == "X":  # YELLOW
+        cprint(u'\u2B24', 'yellow', end="")
+    print(", which column (1-7) do you wish to play at? ", end="")
+    return int(input(""))
 
 
 # Function to confirm that player played a valid move
@@ -147,6 +173,17 @@ def connectFour(board, moveColumn, player):
                 count = 0
 
 
+# Function to announce the winning player with colour
+def announceWinner(player):
+    print("Connect 4!")
+    print("Player ", end="")
+    if player == "O":  # RED
+        cprint(u'\u2B24', 'red', end="")
+    elif player == "X":  # YELLOW
+        cprint(u'\u2B24', 'yellow', end="")
+    print(" wins!")
+
+
 ######################
 ## BODY OF THE GAME ##
 ######################
@@ -157,13 +194,14 @@ while wishToPlay:
     board = []              # An empty list
     initialiseBoard(board)  # is made into a 6 x 7 board with empty spaces
     printBoard(board)       # and is printed onto the screen.
-    player = "o"
+    player = "O"            # Starting player. Other player = X
+                            # Each is represented by a red or yellow circle, respectively
 
     while True:         # Loop used to iterate turn-taking
 
         while True:     # Loop used to validate user input
             try:
-                moveColumn = int(input("Player " + player + ", which column (1-7) do you wish to play at?"))
+                moveColumn = prompt(player)
             except:     # if non-integers are entered, program doesn't break down
                 print("Invalid input. Please enter an integer between 1 to 7.")
                 printBoard(board)
@@ -177,14 +215,13 @@ while wishToPlay:
 
         printBoard(board)
         if connectFour(board, moveColumn, player):
-            print("Connect 4!")
-            print("Player " + player + " wins!")
+            announceWinner(player)
             break   # Exit turn-taking loop
-        else:
-            if player == "o":
-                player = "x"
+        else:   # Change players
+            if player == "O":
+                player = "X"
             else:
-                player = "o"
+                player = "O"
 
     while True:     # Loop used to determine user's intention to play again
         encore = input("Do you wish to play again (Y/N)?")
