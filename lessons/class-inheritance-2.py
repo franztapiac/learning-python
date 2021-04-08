@@ -1,7 +1,7 @@
 # Class inheritance
-# Code from pirple.com lesson in "Python is Easy"
+# Code copied from pirple.com lesson from "Python is Easy"
 # Typed up by Franz A. Tapia Chaca
-# 07 April 2021
+# Last updated 08 April 2021
 
 class Pet:
     def __init__(self, name_set, age_set, hunger_set, playful_set):
@@ -36,6 +36,9 @@ class Pet:
     def getPlayful(self):
         return self.playful
 
+    def __str__(self):
+        return self.name + " is " + str(self.age) + " years old."
+
 
 class Dog(Pet):
     def __init__(self, name_set, age_set, hunger_set, playful_set, breed_set, favouriteToy_set):
@@ -48,6 +51,33 @@ class Dog(Pet):
             return "Dog wants to play with " + self.favouriteToy + "."
         else:
             return "Dog doesn't want to play."
+
+
+class Cat(Pet):
+    def __init__(self, name_set, age_set, hunger_set, playful_set, place_set):
+        Pet.__init__(self, name_set, age_set, hunger_set, playful_set)
+        self.favouritePlaceToSit = place_set
+
+    def wantsToSit(self):
+        if self.playful:
+            print(self.name + " wants to sit on " + self.favouritePlaceToSit + ".")
+        else:
+            print(self.name + " wants to play.")
+
+    def __str__(self):  # overwrites the previous __str__ function in Pet()
+        return self.name + " likes to sit on " + self.favouritePlaceToSit + "."
+
+
+class Human:
+    def __init__(self, name, pets):
+        self.name = name
+        self.pets = pets
+
+    def hasPets(self):
+        if len(self.pets) != 0:
+            return "yes"
+        else:
+            return "no"
 
 
 Pet1 = Pet("Peter", 3, False, True)
@@ -66,3 +96,19 @@ Play = huskyDog.wantsToPlay()
 print(Play)
 huskyDog.playful = False
 print(huskyDog.wantsToPlay())
+
+# Manipulating object in the inherited class Cat
+typicalCat = Cat("Fluffy", 3, False, False, "the sun ray")
+typicalCat.wantsToSit()
+print(typicalCat)
+print(huskyDog)
+
+# Manipulating object in a parent class Human that interacts with daughter objects in Pets class
+yourAverageHuman = Human("Alice", [huskyDog, typicalCat])
+hasPet = yourAverageHuman.hasPets()
+print(hasPet)
+print(yourAverageHuman.pets[0])
+print(yourAverageHuman.pets[0].name)
+print(yourAverageHuman.pets[1])
+print(yourAverageHuman.pets[1].name)
+
