@@ -1,8 +1,7 @@
 # Lessons: Class Inheritance
-# Pirple.com
-
-# Written by Franz Tapia Chaca
-# Updated 05 April 2021
+# Code copied from pirple.com lesson from "Python is Easy"
+# Typed up by Franz Tapia Chaca
+# Updated 08 April 2021
 
 class Team:
     def __init__(self, Name="Name", Origin="Origin"):
